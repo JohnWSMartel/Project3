@@ -189,6 +189,11 @@ var Arena = function Arena(props) {
       className: 'arena'
     },
     React.createElement(
+      'h2',
+      { id: 'fightWinner' },
+      ' Winner: '
+    ),
+    React.createElement(
       'label',
       { htmlFor: 'fighter1' },
       'First Fighter: '

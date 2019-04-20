@@ -74,31 +74,35 @@ const doFight = (req, res) => {
   if (!req.body.name1 || !req.body.name2) {
     return res.status(400).json({ error: 'An error occured' });
   }
-
-  // find the actual domo with all their data
-  //const fighter1 = Domo.DomoModel.findByName(req.body.name1);
-  //const fighter2 = Domo.DomoModel.findByName(req.body.name2);
-  console.log("Fight Started");
+	
+	//
   return Domo.DomoModel.findByName(req.body.name1, (err, docs) => {
 		//docs is an array within which is an index _doc with what I want
     const fighter1 = docs[0]._doc;
     Domo.DomoModel.findByName(req.body.name2, (_err, _docs) => {
       const fighter2 = _docs[0]._doc;
+			
       // Determine fight scores
       // Math.floor(Math.random()*7) returns a random integer from 0 to 6
       const fighter1Score = (fighter1.level + fighter1.age) * Math.floor(Math.random() * 7);
       const fighter2Score = (fighter2.level + fighter2.age) * Math.floor(Math.random() * 7);
-      console.log("Fighter 1 level: "+ fighter1.level);
-      console.log("Fighter 1 Score: "+ fighter1Score);
-      console.log("Fighter 2 Score: "+ fighter2Score);
+			
+			const winnerBoard = document.querySelector("#fightWinner");
+			
       if (fighter1Score > fighter2Score) {
-        // delete fighter 2
-        Domo.DomoModel.deleteOne({ _id: fighter1._id }, () => res.status(200));
-      } else if (fighter2Score > fighter1Score) {
-        // delte fighter 1
+        //Put fighter 1's name on the winner board
+				winnerBoard.innerHTML = "Winner: "+fighter1.name+"  "+fighter1Score;
+				// delete fighter 2
         Domo.DomoModel.deleteOne({ _id: fighter2._id }, () => res.status(200));
+      } else if (fighter2Score > fighter1Score) {
+        //Put fighter 2's name on the winner board
+				winnerBoard.innerHTML = "Winner: "+fighter2.name+"  "+fighter2Score;
+				// delete fighter 1
+        Domo.DomoModel.deleteOne({ _id: fighter1._id }, () => res.status(200));
       } else if (fighter1Score === fighter2Score) {
-        // delte them both
+        //Make the winner board call them both losers
+				winnerBoard.innerHTML = "Both fighters have fallen with a score of "+fighter1Score;
+				// delete them both
         Domo.DomoModel.deleteOne({ _id: fighter1._id }, () => res.status(200));
         Domo.DomoModel.deleteOne({ _id: fighter2._id }, () => res.status(200));
       }
