@@ -75,6 +75,11 @@ var fight = function fight(e) {
   xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhr.setRequestHeader('Accept', 'application/json');
 
+  //What do to with the info that comes back from server
+  xhr.onload = function () {
+    return handleResponse(xhr);
+  };
+
   //Send the request, and get all the domos from the server so the page refreshes
   xhr.send(formData);
   loadDomosFromServer();
@@ -208,6 +213,46 @@ var Arena = function Arena(props) {
     React.createElement('input', { id: '_csrf', type: 'hidden', name: '_csrf', value: props.csrf }),
     React.createElement('input', { className: 'makeFightHappen', type: 'submit', value: 'FIGHT!' })
   );
+};
+
+var handleResponse = function handleResponse(xhr, parseResponse) {
+  var winnerTextbox = document.querySelector('h2');
+  console.dir(xhr.response);
+  var body = JSON.parse(xhr.response);
+  switch (xhr.status) {
+    case 200:
+      //success
+
+      winnerTextbox.innerHTML = 'Winner: ' + body.winner;
+
+      break;
+
+    case 201:
+      //created
+
+      winner.innerHTML = '<b>Create</b>';
+
+      break;
+
+    case 204:
+      //updated (no response back from server)
+
+      winner.innerHTML = '<b>Updated (No Content)</b>';
+
+      return;
+
+    case 400:
+      //bad request
+
+      winner.innerHTML = '<b>Bad Request</b>';
+
+      break;
+
+    default:
+      //any other status code
+      winner.innerHTML = 'Error code not implemented by client.';
+      break;
+  }
 };
 
 var setup = function setup(csrf) {

@@ -55,10 +55,6 @@ const removeDomo = (e) => {
 	return false;
 };
 
-const handleResponse = (xhr, parseResponse) => {
-    const winner = document.querySelector("#")
-}
-
 const fight = (e) => {
   e.preventDefault();
   
@@ -79,6 +75,9 @@ const fight = (e) => {
   xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhr.setRequestHeader ('Accept', 'application/json');
   
+  //What do to with the info that comes back from server
+  xhr.onload = () => handleResponse(xhr);
+    
   //Send the request, and get all the domos from the server so the page refreshes
   xhr.send(formData);
   loadDomosFromServer();
@@ -164,32 +163,43 @@ const Arena = function(props){
       <input id="_csrf" type="hidden" name="_csrf" value={props.csrf} />
       <input className="makeFightHappen" type="submit" value="FIGHT!" />
     </form>
-	  <script>
-	  	const handleResponse = (xhr) => {
-	  		const winner = document.querySelector('#fightWinner');
-	  
-	  		switch(xhr.status){
-					 case 200: //success
-          				winner.innerHTML = `<b>Success</b>`;
-          				break;
-        			case 201: //created
-          				winner.innerHTML = '<b>Create</b>';
-          				break;
-        			case 204: //updated (no response back from server)
-          				winner.innerHTML = '<b>Updated (No Content)</b>';
-          				return;
-        			case 400: //bad request
-         				 winner.innerHTML = `<b>Bad Request</b>`;
-         				 break;
-        			default: //any other status code
-          					winner.innerHTML = `Error code not implemented by client.`;
-          					break;
-			}
-	  		parseJSON(xhr,winner);
-  		};
-	</script>
   );
 };
+
+const handleResponse = (xhr, parseResponse) => {
+	const winnerTextbox = document.querySelector('h2');
+    console.dir(xhr.response);
+    const body = JSON.parse(xhr.response);
+	switch(xhr.status){
+		case 200: //success
+       
+			winnerTextbox.innerHTML = `Winner: ` + body.winner;
+       
+			break;
+     
+		case 201: //created
+       
+			winner.innerHTML = '<b>Create</b>';
+       
+			break;
+     
+		case 204: //updated (no response back from server)
+       
+			winner.innerHTML = '<b>Updated (No Content)</b>';
+       
+			return;
+     
+		case 400: //bad request
+      
+			winner.innerHTML = `<b>Bad Request</b>`;
+      
+			break;
+     
+		default: //any other status code
+          	winner.innerHTML = `Error code not implemented by client.`;
+          	break;
+			}
+  		};
 
 const setup = function(csrf){
 	ReactDOM.render(

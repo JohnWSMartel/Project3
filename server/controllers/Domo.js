@@ -87,24 +87,17 @@ const doFight = (req, res) => {
       const fighter1Score = (fighter1.level + fighter1.age) * Math.floor(Math.random() * 7);
       const fighter2Score = (fighter2.level + fighter2.age) * Math.floor(Math.random() * 7);
 			
-			const winnerBoard = document.querySelector("#fightWinner");
-			
       if (fighter1Score > fighter2Score) {
-        //Put fighter 1's name on the winner board
-				winnerBoard.innerHTML = "Winner: "+fighter1.name+"  "+fighter1Score;
 				// delete fighter 2
-        Domo.DomoModel.deleteOne({ _id: fighter2._id }, () => res.status(200));
+        Domo.DomoModel.deleteOne({ _id: fighter2._id }, () => res.json({winner:fighter1.name}));
       } else if (fighter2Score > fighter1Score) {
-        //Put fighter 2's name on the winner board
-				winnerBoard.innerHTML = "Winner: "+fighter2.name+"  "+fighter2Score;
 				// delete fighter 1
-        Domo.DomoModel.deleteOne({ _id: fighter1._id }, () => res.status(200));
+        Domo.DomoModel.deleteOne({ _id: fighter1._id }, () => res.json({winner:fighter2.name}));
       } else if (fighter1Score === fighter2Score) {
-        //Make the winner board call them both losers
-				winnerBoard.innerHTML = "Both fighters have fallen with a score of "+fighter1Score;
 				// delete them both
-        Domo.DomoModel.deleteOne({ _id: fighter1._id }, () => res.status(200));
-        Domo.DomoModel.deleteOne({ _id: fighter2._id }, () => res.status(200));
+        Domo.DomoModel.deleteOne({ _id: fighter1._id });
+        Domo.DomoModel.deleteOne({ _id: fighter2._id });
+          res.json({winner: "Everyone loses"});
       }
     });
   });
