@@ -1,5 +1,3 @@
-const pics = ["/assets/img/domoface.jpeg","/assets/img/monk.jpeg","/assets/img/mage.jpeg"];
-
 const loadDomosFromServer = () => {
     //Get the token, once that is done get the domos
     sendAjax('GET', '/getToken', null, (tokenData) => {
@@ -118,12 +116,7 @@ const DomoList = function(props) {
 		);
 	}
     
-	const domoNodes = props.domos.map(function(domo) {
-        //Create random number to give characters different images
-        //returns 0, 1, or 2
-        var random = Math.floor(Math.random()*3);
-        console.log("Random is "+random);
-        
+	const domoNodes = props.domos.map(function(domo) {        
         //Added in the domo._id value, and the props.csrf value
       return (
           <form id="domoList"
@@ -134,7 +127,7 @@ const DomoList = function(props) {
             className="domoList"
           >
             <div key={domo._id} className="domo">
-                <img src=pics[random] alt="Fighter face" className="domoFace" />
+                <img src={domo.image} alt="Fighter face" className="domoFace" />
                 <h3 className="domoName"> Name: {domo.name} </h3>
                 <h3 className="domoAge"> Age: {domo.age} </h3>
                 <h3 className="domoLevel"> Level: {domo.level} </h3>
