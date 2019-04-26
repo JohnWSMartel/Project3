@@ -1,3 +1,5 @@
+const pics = ["/assets/img/domoface.jpeg","/assets/img/monk.jpeg","/assets/img/mage.jpeg"];
+
 const loadDomosFromServer = () => {
     //Get the token, once that is done get the domos
     sendAjax('GET', '/getToken', null, (tokenData) => {
@@ -117,6 +119,11 @@ const DomoList = function(props) {
 	}
     
 	const domoNodes = props.domos.map(function(domo) {
+        //Create random number to give characters different images
+        //returns 0, 1, or 2
+        var random = Math.floor(Math.random()*3);
+        console.log("Random is "+random);
+        
         //Added in the domo._id value, and the props.csrf value
       return (
           <form id="domoList"
@@ -126,15 +133,15 @@ const DomoList = function(props) {
             method="POST"
             className="domoList"
           >
-						<div key={domo._id} className="domo">
-							<img src="/assets/img/domoface.jpeg" alt="Fighter face" className="domoFace" />
-							<h3 className="domoName"> Name: {domo.name} </h3>
-							<h3 className="domoAge"> Age: {domo.age} </h3>
-      			  <h3 className="domoLevel"> Level: {domo.level} </h3>
-      			  <input id="_id" type="hidden" name="_id" value={domo._id} />
-							<input id="csrf" type="hidden" name="_csrf" value={props.csrf} />
-      			  <input type="submit" value="Kill Fighter" />
-						</div>
+            <div key={domo._id} className="domo">
+                <img src=pics[random] alt="Fighter face" className="domoFace" />
+                <h3 className="domoName"> Name: {domo.name} </h3>
+                <h3 className="domoAge"> Age: {domo.age} </h3>
+                <h3 className="domoLevel"> Level: {domo.level} </h3>
+                <input id="_id" type="hidden" name="_id" value={domo._id} />
+                <input id="csrf" type="hidden" name="_csrf" value={props.csrf} />
+                <input type="submit" value="Kill Fighter" />
+            </div>
           </form>
 		);
 	});
