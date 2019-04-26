@@ -87,30 +87,35 @@ const doFight = (req, res) => {
 
       // Determine fight scores
       // Math.floor(Math.random()*7) returns a random integer from 0 to 6
-      const fighter1Score = (fighter1.level + fighter1.age) * Math.floor(Math.random() * 7);
-      const fighter2Score = (fighter2.level + fighter2.age) * Math.floor(Math.random() * 7);
+      let fighter1Score = (fighter1.level + fighter1.age) * Math.floor(Math.random() * 7);
+      let fighter2Score = (fighter2.level + fighter2.age) * Math.floor(Math.random() * 7);
 
-        //Warrior: /assets/img/domoface.jpeg
-        //Monk: /assets/img/monk.jpg
-        //Mage: /assets/img/mage.jpg
-        //Warrior > Monk > Mage > Warrior
-        //if fighter1 ever has advantage
-        if(fighter1.image === "/assets/img/domoface.jpeg"&& fighter2.image === "/assets/img/monk.jpg"){
-            fighter1Score *= 2;
-        } else if(fighter1.image === "/assets/img/monk.jpg"&&fighter2.image === "/assets/img/mage.jpg"){
-            fighter1Score *= 2;
-        } else if(fighter1.image === "/assets/img/mage.jpg"&&&fighter2.image === "/assets/img/domoface.jpeg"){
-            fighter1Score *= 2;
-        }
-        //else if fighter2 ever has advantage
-        else if(fighter2.image === "/assets/img/domoface.jpeg"&&fighter1.image === "/assets/img/monk.jpg"){
-            fighter2Score *= 2;
-        } else if (fighter2.image === "/assets/img/monk.jpg"&&fighter1.image === "/assets/img/mage.jpg"){
-            fighter2Score *= 2;
-        } else if(fighter2.image === "/assets/img/mage.jpg"&&fighter2.image === "/assets/img/domoface.jpeg"){
-            fighter2Score *= 2;
-        }
-        
+        // Warrior: /assets/img/domoface.jpeg
+        // Monk: /assets/img/monk.jpg
+        // Mage: /assets/img/mage.jpg
+        // Warrior > Monk > Mage > Warrior
+        // if fighter1 ever has advantage
+      if (fighter1.image === '/assets/img/domoface.jpeg' &&
+          fighter2.image === '/assets/img/monk.jpg') {
+        fighter1Score *= 2;
+      } else if (fighter1.image === '/assets/img/monk.jpg' &&
+                 fighter2.image === '/assets/img/mage.jpg') {
+        fighter1Score *= 2;
+      } else if (fighter1.image === '/assets/img/mage.jpg' &&
+                 fighter2.image === '/assets/img/domoface.jpeg') {
+        fighter1Score *= 2;
+      } else if (fighter2.image === '/assets/img/domoface.jpeg' &&
+               fighter1.image === '/assets/img/monk.jpg') {
+          // else if fighter2 ever has advantage
+        fighter2Score *= 2;
+      } else if (fighter2.image === '/assets/img/monk.jpg' &&
+                 fighter1.image === '/assets/img/mage.jpg') {
+        fighter2Score *= 2;
+      } else if (fighter2.image === '/assets/img/mage.jpg' &&
+                 fighter2.image === '/assets/img/domoface.jpeg') {
+        fighter2Score *= 2;
+      }
+
       if (fighter1Score > fighter2Score) {
 				// delete fighter 2
         Domo.DomoModel.deleteOne({ _id: fighter2._id }, () => res.json({ winner: fighter1.name }));
