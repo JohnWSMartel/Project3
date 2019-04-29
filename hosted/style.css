@@ -49,7 +49,8 @@ nav:nth-child(1) {
 
 .arena {
     border: 2px solid darkgray;
-    height: 40px;
+    vertical-align: middle;
+    height: 70px;
     width: 700px;
     margin: auto;
     padding-top:10px;
@@ -84,7 +85,7 @@ nav:nth-child(1) {
 
 .domoForm {
     border: 2px solid darkgray;
-    height: 35px;
+    height: 50px;
     width: 700px;
     margin-top:0px;
     padding-top:10px;
