@@ -77,6 +77,35 @@ const signup = (request, response) => {
   });
 };
 
+
+//started working off an example for change password but decided to comment it and focus on style
+/*const changePassHandle = (req, res) => {
+    const userID = req.session.account._id;
+    let userPass;
+    let userSalt;
+    
+    Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
+        const accountData = {
+            username: req.session.account.username,
+            salt,
+            password: hash,
+        };
+        userPass = accountData.password;
+        userSalt = salt;
+        
+        Account.AccountModel.findById(userID, (err, doc) => {
+            if(err){
+                console.log(err);
+            }
+            const docu = doc;
+            docu.password = userPass;
+            docu.salt = userSalt;
+            docu.save();
+            return res.json({ redirect: '/maker'});
+        });
+    });
+};*/
+
 const getToken = (request, response) => {
   const req = request;
   const res = response;
